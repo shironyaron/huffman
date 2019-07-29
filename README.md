@@ -1,15 +1,10 @@
-פונקציית Compress- מקבלת שני מערכים- מערך קבצי קלט ומערך קבצי פלט. לאחר מכן קוראת לפונקציה countTheChar-הפונקציה בונה מפה בעזרת הספרייה של ג'אווה map. כאשר הkey זהו התו שנקלט מהקובץ והvalue זה מספר הפעמים שהוא הופיע בקובץ.
-לאחר מכן נקראת הפונקציה buildTree-פונקציה זו בונה את עץ הופמן כתור עדיפויות (בעזרת הספרייה priority queue), מוסיפה לעץ את האינפורמציה על הקלט שאספנו קודם לכן, אל המפה.
-לאחר מכן, נקראת הפונקציה charToCodeMap- אשר בונה מפה ובה כל התווים והקידודים שלהם אותם בנינו קודם בעזרת העץ. פונקציה זו תעבור פעם אחת בלבד על העץ עבור כל תו, תמצא את הקידוד המתאים לו- ותשמור אותו במפה. 
-בשלב זה נתחיל לכתוב לקובץ, קודם כל את הקידוד של כל אות, כדי שכשמישהו אחר יפתח את הקובץ הוא ידע איך לפענח אותו.
-לאחר מכן, הפונקציה עוברת פעם נוספת על הקובץ, קוראת תו תו, ממירה אותו לקידוד הופמן (בעזרת המפה שבנינו בcharToCodeMap), קוראת לפונקציה writebit אשר מכניסה 8 תווים לבייט ורק אז כותבת את הבייט לקובץ הפלט.
-פונקציית decompress- מקבלת שני מערכים- מערך קבצי קלט ומערך קבצי פלט. קודם כל הפונקציה קוראת את הקידוד של כל אות אשר כתבנו לה בשלב הcompress. לאחר מכן, קוראת תו תו מהקובץ- כאשר נקרא תו 0 היא הולכת שמאלה בעץ, כאשר נקרא 1, ימינה, עד אשר היא מגיעה לחוליה בה יש תו (בניגוד לחוליות בהן משתנה התו ריק- null) - וזהו התו שתדפיס לקובץ הפלט (שנמצא במערך קבצי הפלט במקום ה1- לכן יש להכין מראש directory לקובץ פלט במערך output_names במקום ה1).
-בעצם הקריאה מתבצעת בייט בייט, כאשר בכל בייט יש 8 תווים. בעזרת פונקצייה readbit נוכל לקחת תו תו מתוך הבייט שקלטנו ולהוסיף אותו לקידוד- וכך לחפש לאיזו אות שייך הקידוד שהתחלנו לחפש.
-הערות: השתמשנו בstring לייצוג התו ולא char  על מנת שזה יתאים לנו לקידוד של יותר מתו אחד, כמו לדוגמא הפונקציה הבאה, ובכלל עוד פונקציות שניתן להוסיף שמחפשות רצפים.
+class HuffmanEncoderDecoder-
+The Compress function accepts two arrays - an array of input files and an array of output files. Then calls the function countTheChar-function constructs a map using the Java map library. When the key is the character entered from the file and the value is the number of times it appears in the file.
+Then called the buildTree function - this function builds the Huffman tree as a priority tree (with the priority queue), adding the information on the input we collected earlier to the map.
+At this point we will begin to write to the file, first of all the encoding of each letter, so that when someone else opens the file he will know how to decode it.
+Then, the function passes through the file again, reads the chracters one by one, converts it to Huffman encoding (using the map we built in charToCodeMap), calls the writebit function which inserts 8 characters into bytes and then writes the bytes to the output file.
 
-מחלקת HuffmanBetterEnDe- 
-פונקציית Compress- תחילה, עושה אותו תהליך כמו הפונקציה שהיא דורסת של מחלקת האב. לאחר מכן עוברת על הקובץ בפעם השנייה ומחפשת זוגות של תווים שחוזרים על עצמם ומוסיפה את הזוגות שהופיעו עשר פעמים ויותר לעץ הופמן (אפשר להתאים את זה לפי האורך של הקובץ- ככל שהקובץ ארוך יותר כך נרצה לזהות זוגות שחוזרים פעמים רבות יותר, וכך גם נמנע מצב בו נקבל עץ גדול מידיי שייקח המון זמן לעבור עליו על מנת לקודד).
-קידוד מסוג זה יתאים לקבצים שבהם אנו יודעים שקיימת חזרה של זוגות של תווים הרבה פעמים (כמו למשל תמונות שיש בהן הרבה חלקים לבנים\שחורים וכדומה).
-לאחר שמצאנו את הזוגות הרלוונטיים מוסיפה אותם לעץ יחד עם התווים היחידים.
-בפעם השלישית שנעבור על הקובץ בעזרת פונקציה זו- נקלוט כל פעם שני תווים ונחפש האם קיים קידוד עבורם בעץ (או לצורך העניין במפה שיצרנו ע"פ העץ). אם קיים- נכתוב את הקידוד הזה בקובץ, אם לא קיים- נכתוב לכל תו בנפרד את הקידוד שלו.
-לאחר מכן עבור "חילוץ" נשתמש בפונקציית decompress של מחלקת האב.
+The decompress function accepts two arrays - an array of input files and an array of output files. First of all, the function reads the encoding of each letter we wrote to in the compress phase. Then, you read a character from the file - when a character is 0 it goes to the left in the tree, where it is 1, right until it reaches a vertex with a character (as opposed to the null-null character) The output files are in the 1st place so the output directory must be prepared in the output_names array instead of the 1).
+readbit function- With this function , we can take a character from the bit that we have received and add it to encoding - and so look for which letter belongs to the encoding we started looking for.
+
+Notes: We used string to represent the character rather than char so that it would be appropriate for us to encode more than one character, such as the following function, including other functions that can be added to look for sequences.
